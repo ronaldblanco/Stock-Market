@@ -2,6 +2,7 @@
 
 var path = process.cwd();
 var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
+var PublicHandler = require(path + '/app/controllers/publicHandler.server.js');
 
 module.exports = function (app, passport) {
 
@@ -12,8 +13,17 @@ module.exports = function (app, passport) {
 			res.redirect('/login');
 		}
 	}
+	
+	function isNotLoggedIn (req, res, next) {
+		//if (req.isAuthenticated()) {
+			return next();
+		//} else {
+			//res.redirect('/login');
+		//}
+	}
 
 	var clickHandler = new ClickHandler();
+	var publicHandler = new PublicHandler();
 
 	app.route('/')
 		.get(isLoggedIn, function (req, res) {
@@ -54,4 +64,9 @@ module.exports = function (app, passport) {
 		.get(isLoggedIn, clickHandler.getClicks)
 		.post(isLoggedIn, clickHandler.addClick)
 		.delete(isLoggedIn, clickHandler.resetClicks);
+		
+	app.route('/api/:id/trader')
+		.get(isNotLoggedIn, publicHandler.getTrader)
+		//.post(isLoggedIn, clickHandler.addClick)
+		//.delete(isLoggedIn, clickHandler.resetClicks);
 };
