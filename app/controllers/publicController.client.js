@@ -1,5 +1,9 @@
 'use strict';
 
+var dataG = [];
+var label = '';
+var color = undefined;
+
 var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 var config = {
             type: 'line',
@@ -86,9 +90,13 @@ window.randomScalingFactor = function() {
 	return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
 };
 
-   //var addButton = document.querySelector('.btn-add');
-   //var deleteButton = document.querySelector('.btn-delete');
-   //var clickNbr = document.querySelector('#click-nbr');
+window.randomScalingFactorNew = function(num) {
+	return Math.round((num/1000) * 100);
+};
+
+   var addButton = document.querySelector('#addDataset');
+   var deleteButton = document.querySelector('#removeDataset');
+   var stock = document.querySelector('#stock');
    var apiUrl = appUrl + '/api/:id/trader';
 
    function updateClickCount (data) {
@@ -97,19 +105,34 @@ window.randomScalingFactor = function() {
    }
    
    function updateTrader (data) {
+      console.log(config);
       var traderObject = JSON.parse(data);
-      console.log(traderObject);
+      //var traderObject = data;
+      //console.log(traderObject);
+      dataG = [];
+      for(var a = 0; a < traderObject.length; a++){
+         dataG.push(parseFloat(traderObject[a].high));
+      }
+      console.log(data);
+      if(label === '') label = 'GOOG';
+      if(color === undefined) color = window.chartColors.red;
+   }
+   
+   function noUpdateTrader (data) {
+      
    }
 
    ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', apiUrl, updateTrader));
 
-   /*addButton.addEventListener('click', function () {
-
-      ajaxFunctions.ajaxRequest('POST', apiUrl, function () {
-         ajaxFunctions.ajaxRequest('GET', apiUrl, updateClickCount);
+   addButton.addEventListener('click', function () {
+       
+    var stock = document.querySelector('input[id = "stock"]').value;//{'user': user.github.id,'poll':poll}
+    label = stock;
+      ajaxFunctions.ajaxRequest('GET', apiUrl+'add/'+stock, function () {
+         ajaxFunctions.ajaxRequest('GET', apiUrl, updateTrader);
       });
 
-   }, false);*/
+   }, false);
 
    /*deleteButton.addEventListener('click', function () {
 

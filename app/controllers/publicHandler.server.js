@@ -5,11 +5,39 @@ var traderjs = require('traderjs');
 
 function PublicHandler () {
 	
+	this.getNothing = function (req, res) {
+	
+        	res.send({});
+	
+	};
+	
 	this.getTrader = function (req, res) {
 		
 		var configuration = {
     		//symbol: 'NASD',
     		symbol: 'NASD:GOOG',
+    		//interval: 86400,
+    		interval: 345600,
+    		period: '365d',
+    		fields: ['d','o','c','l','h','v']
+		};
+		traderjs
+    		.config(configuration)
+    		.transformer('json') // Converts the data to JSON 
+    		.temporal(function(data) {
+    		//console.log(data);
+        	res.send(data);
+		});
+    		
+	};
+	
+	this.addTrader = function (req, res) {
+		var stock = req.originalUrl.toString().split("/api/:id/traderadd/")[1];//.split("_");
+		if(stock == null || stock == '') stock = 'GOOG';
+		console.log(stock);
+		var configuration = {
+    		//symbol: 'NASD',
+    		symbol: 'NASD:'+stock,
     		//interval: 86400,
     		interval: 345600,
     		period: '365d',
