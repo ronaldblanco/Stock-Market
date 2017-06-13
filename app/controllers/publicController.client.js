@@ -1,15 +1,20 @@
 'use strict';
 
+//GLOBALS
+var ope = '';
+var temp = {};
 var dataG = [];
+var labelsG = [];
 var label = '';
 var color = undefined;
+////////////////
 
 var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 var config = {
             type: 'line',
             data: {
                 labels: ["January", "February", "March", "April", "May", "June", "July"],
-                datasets: [{
+                datasets: [/*{
                     label: "My First dataset",
                     backgroundColor: window.chartColors.red,
                     borderColor: window.chartColors.red,
@@ -37,7 +42,7 @@ var config = {
                         randomScalingFactor(),
                         randomScalingFactor()
                     ],
-                }]
+                }*/]
             },
             options: {
                 responsive: true,
@@ -91,7 +96,7 @@ window.randomScalingFactor = function() {
 };
 
 window.randomScalingFactorNew = function(num) {
-	return Math.round((num/1000) * 100);
+	return Math.round((num/*/1000) * 100*/));
 };
 
    var addButton = document.querySelector('#addDataset');
@@ -99,47 +104,72 @@ window.randomScalingFactorNew = function(num) {
    var stock = document.querySelector('#stock');
    var apiUrl = appUrl + '/api/:id/trader';
 
-   function updateClickCount (data) {
-      var clicksObject = JSON.parse(data);
-      clickNbr.innerHTML = clicksObject.clicks;
-   }
-   
-   function updateTrader (data) {
+   function updateTraderAdd (data) {
       console.log(config);
       var traderObject = JSON.parse(data);
-      //var traderObject = data;
-      //console.log(traderObject);
+      
       dataG = [];
+      labelsG = [];
       for(var a = 0; a < traderObject.length; a++){
-         dataG.push(parseFloat(traderObject[a].high));
+         
+         dataG.push(parseFloat(traderObject[a].close)-parseFloat(traderObject[a].open));
+         labelsG.push(new Date(parseInt(traderObject[a].date)).toDateString());
       }
-      console.log(data);
+      console.log(labelsG);
       if(label === '') label = 'GOOG';
       if(color === undefined) color = window.chartColors.red;
-   }
-   
-   function noUpdateTrader (data) {
+      
+      var colorNames = Object.keys(window.chartColors);
+      var colorName = colorNames[config.data.datasets.length % colorNames.length];
+            var newColor = window.chartColors[colorName];
+            
+            if(dataG.length > 0){
+            	
+            	temp = {
+                    label: label,
+                    backgroundColor: newColor,
+                    borderColor: newColor,
+                    data: [],
+                    fill: false,
+                }
+                
+            }
+            
+      ope = 'add';
       
    }
+   
+   function updateTraderDel (data) {
+      ope = 'del';
+   }
+   
+   //ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', apiUrl, updateTrader));
 
-   ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', apiUrl, updateTrader));
-
-   addButton.addEventListener('click', function () {
+    addButton.addEventListener('click', function () {
        
     var stock = document.querySelector('input[id = "stock"]').value;//{'user': user.github.id,'poll':poll}
     label = stock;
       ajaxFunctions.ajaxRequest('GET', apiUrl+'add/'+stock, function () {
-         ajaxFunctions.ajaxRequest('GET', apiUrl, updateTrader);
+         ajaxFunctions.ajaxRequest('GET', apiUrl, updateTraderAdd);
       });
 
    }, false);
+   
+    deleteButton.addEventListener('click', function () {
+       
+        var stock = document.querySelector('input[id = "stock"]').value;//{'user': user.github.id,'poll':poll}
+        var myDataSets = config.data.datasets;
+        console.log(myDataSets);
+        console.log(myDataSets.length);
+        var newDataSets = [];
+        for(var a = 0; a < myDataSets.length; a++){
+            console.log(myDataSets[a].label);
+            if(myDataSets[a].label !== stock) newDataSets.push(myDataSets[a]);
+        }
+        console.log(newDataSets);
+        //console.log(config.data.datasets);
+        config.data.datasets = newDataSets;
 
-   /*deleteButton.addEventListener('click', function () {
-
-      ajaxFunctions.ajaxRequest('DELETE', apiUrl, function () {
-         ajaxFunctions.ajaxRequest('GET', apiUrl, updateClickCount);
-      });
-
-   }, false);*/
-
+   }, false);
+   
 })();

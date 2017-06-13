@@ -2,6 +2,7 @@
 
 var Users = require('../models/users.js');
 var traderjs = require('traderjs');
+var stockG = '';
 
 function PublicHandler () {
 	
@@ -12,10 +13,12 @@ function PublicHandler () {
 	};
 	
 	this.getTrader = function (req, res) {
-		
+		var stock = '';
+		if(stockG == '') stock = 'GOOG';
+		else stock = stockG;
 		var configuration = {
     		//symbol: 'NASD',
-    		symbol: 'NASD:GOOG',
+    		symbol: 'NASD:'+stock,
     		//interval: 86400,
     		interval: 345600,
     		period: '365d',
@@ -34,12 +37,14 @@ function PublicHandler () {
 	this.addTrader = function (req, res) {
 		var stock = req.originalUrl.toString().split("/api/:id/traderadd/")[1];//.split("_");
 		if(stock == null || stock == '') stock = 'GOOG';
+		stockG = stock;
 		console.log(stock);
 		var configuration = {
     		//symbol: 'NASD',
     		symbol: 'NASD:'+stock,
     		//interval: 86400,
-    		interval: 345600,
+    		//interval: 345600,
+    		interval: 2592000,
     		period: '365d',
     		fields: ['d','o','c','l','h','v']
 		};

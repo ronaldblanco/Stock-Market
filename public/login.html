@@ -19,7 +19,7 @@
 
 	<body>
 		<div class="container">	
-			<div class="login">
+			<!--<div class="login">
 				<img src="/public/img/clementine_150.png" />
 				<br />
 				<p class="clementine-text">Clementine.js</p>
@@ -29,20 +29,28 @@
 						<p>LOGIN WITH GITHUB</p>
 					</div>
 				</a>
-			</div>
-		</div>
-		<div style="width:75%;" class = "container">
+			</div>-->
+			
+	<center>
+	    <br>
+	STOCK:<input type="text" name="stock" id="stock" placeholder="Stock" value = ""><br>
+    <button id="update">Update CHART</button>
+    <!--<button id="randomizeData">Randomize Data</button>-->
+    <button id="addDataset">Add STOCK</button>
+    <button id="removeDataset">Remove STOCK</button>
+    <!--<button id="addData">Add Data</button>
+    <button id="removeData">Remove Data</button>-->
+    
+	<br>
+    <br>		
+	<div style="width:75%;">
         <canvas id="canvas"></canvas>
     </div>
-    <br>
-    <br>
-    STOCK:<input type="text" name="stock" id="stock"><br>
-    <button id="update">Update</button>
-    <button id="randomizeData">Randomize Data</button>
-    <button id="addDataset">Add Dataset</button>
-    <button id="removeDataset">Remove Dataset</button>
-    <button id="addData">Add Data</button>
-    <button id="removeData">Remove Data</button>
+    </center>
+		</div>
+		
+    
+    
     
     
     
@@ -124,32 +132,26 @@
 		
 		document.getElementById('update').addEventListener('click', function() {
             
-            var newdata = [];
-            //console.log(config);
-            if(dataG.length > 0){
-            	config.data.datasets = [];
-            	var first = {
-                    label: label,
-                    backgroundColor: color,
-                    borderColor: color,
-                    data: [],
-                    fill: false,
-                }
+            if(ope == 'add'){
+                var newdata = [];
                 for(var a = 0; a < dataG.length; a++){
         			newdata.push(randomScalingFactorNew(dataG[a]));
     			}
-    			first.data = newdata;
-    			config.data.datasets.push(first);
-    			
+    			temp.data = newdata;
+    			config.data.datasets.push(temp);
+    			config.data.labels = labelsG;
+    			ope = '';
+            }else if(ope == 'del'){
+                
+                ope = '';
             }
-            console.log(config);
-
-            window.myLine.update();
+  
+              window.myLine.update();
         });
 
 
 
-        document.getElementById('randomizeData').addEventListener('click', function() {
+        /*document.getElementById('randomizeData').addEventListener('click', function() {
             config.data.datasets.forEach(function(dataset) {
                 dataset.data = dataset.data.map(function() {
                     return randomScalingFactor();
@@ -158,52 +160,16 @@
             });
 
             window.myLine.update();
-        });
+        });*/
 
-        var colorNames = Object.keys(window.chartColors);
+        
         document.getElementById('addDataset').addEventListener('click', function() {
-            /*var colorName = colorNames[config.data.datasets.length % colorNames.length];
-            var newColor = window.chartColors[colorName];
-            var newDataset = {
-                label: 'Dataset ' + config.data.datasets.length,
-                backgroundColor: newColor,
-                borderColor: newColor,
-                data: [],
-                fill: false
-            };
-
-            for (var index = 0; index < config.data.labels.length; ++index) {
-                newDataset.data.push(randomScalingFactor());
-            }
-
-            config.data.datasets.push(newDataset);*/
-            var colorName = colorNames[config.data.datasets.length % colorNames.length];
-            var newColor = window.chartColors[colorName];
-            var newdata = [];
-            //console.log(config);
-            if(dataG.length > 0){
-            	//config.data.datasets = [];
-            	var first = {
-                    label: label,
-                    backgroundColor: newColor,
-                    borderColor: newColor,
-                    data: [],
-                    fill: false,
-                }
-                for(var a = 0; a < dataG.length; a++){
-        			newdata.push(randomScalingFactorNew(dataG[a]));
-    			}
-    			first.data = newdata;
-    			config.data.datasets.push(first);
-    			
-            }
-            console.log(config);
-
+            
+            
             window.myLine.update();
-          
-        });
+          });
 
-        document.getElementById('addData').addEventListener('click', function() {
+        /*document.getElementById('addData').addEventListener('click', function() {
             if (config.data.datasets.length > 0) {
                 var month = MONTHS[config.data.labels.length % MONTHS.length];
                 config.data.labels.push(month);
@@ -214,14 +180,14 @@
 
                 window.myLine.update();
             }
-        });
+        });*/
 
         document.getElementById('removeDataset').addEventListener('click', function() {
-            config.data.datasets.splice(0, 1);
+            //config.data.datasets.splice(0, 1);
             window.myLine.update();
         });
 
-        document.getElementById('removeData').addEventListener('click', function() {
+        /*document.getElementById('removeData').addEventListener('click', function() {
             config.data.labels.splice(-1, 1); // remove the label first
 
             config.data.datasets.forEach(function(dataset, datasetIndex) {
@@ -229,7 +195,7 @@
             });
 
             window.myLine.update();
-        });
+        });*/
     </script>
     
     	<script type="text/javascript" src="common/ajax-functions.js"></script>

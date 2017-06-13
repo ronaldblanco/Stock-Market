@@ -66,7 +66,7 @@ module.exports = function (app, passport) {
 		.delete(isLoggedIn, clickHandler.resetClicks);
 		
 	app.route('/api/:id/trader')
-		.get(isNotLoggedIn, publicHandler.addTrader)
+		.get(isNotLoggedIn, publicHandler.getTrader)
 		
 	app.route('/api/:id/traderadd/*')
 		.get(isNotLoggedIn, publicHandler.addTrader)
