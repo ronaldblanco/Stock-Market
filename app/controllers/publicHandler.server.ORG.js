@@ -1,14 +1,5 @@
 'use strict';
 
-//GLOBALS
-var configFromServer = {};
-var ope = '';
-var temp = {};
-var dataG = [];
-var labelsG = [];
-var label = '';
-var color = undefined;
-////////////////
 
 var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 var config = {
@@ -79,80 +70,98 @@ var config = {
         };
 
 
+var Users = require('../models/users.js');
+var traderjs = require('traderjs');
+var io = require('socket.io');
+var stockG = '';
+//io.on('connection', function(){ console.log('socked.io->connected') });
 
-(function () {
-   
-   window.chartColors = {
-	red: 'rgb(255, 99, 132)',
-	orange: 'rgb(255, 159, 64)',
-	yellow: 'rgb(255, 205, 86)',
-	green: 'rgb(75, 192, 192)',
-	blue: 'rgb(54, 162, 235)',
-	purple: 'rgb(153, 102, 255)',
-	grey: 'rgb(201, 203, 207)'
-};
+function PublicHandler () {
+	
+	this.getNothing = function (req, res) {
+	
+        	res.send({});
+	
+	};
+	
+	this.getTrader = function (req, res) {
+		var stock = '';
+		if(stockG == '') stock = 'GOOG';
+		else stock = stockG;
+		var configuration = {
+    		//symbol: 'NASD',
+    		symbol: 'NASD:'+stock,
+    		//interval: 86400,
+    		interval: 345600,
+    		period: '365d',
+    		fields: ['d','o','c','l','h','v']
+		};
+		traderjs
+    		.config(configuration)
+    		.transformer('json') // Converts the data to JSON 
+    		.temporal(function(data) {
+    		//console.log(data);
+        	res.send(data);
+		});
+    		
+	};
+	
+	this.addTrader = function (req, res) {
+		var stock = req.originalUrl.toString().split("/api/:id/traderadd/")[1];//.split("_");
+		if(stock == null || stock == '') stock = 'GOOG';
+		stockG = stock;
+		console.log(stock);
+		var configuration = {
+    		//symbol: 'NASD',
+    		symbol: 'NASD:'+stock,
+    		//interval: 86400,
+    		//interval: 345600,
+    		interval: 2592000,
+    		period: '365d',
+    		fields: ['d','o','c','l','h','v']
+		};
+		traderjs
+    		.config(configuration)
+    		.transformer('json') // Converts the data to JSON 
+    		.temporal(function(data) {
+    		console.log(data);
+        	res.send(data);
+		});
+    		
+	};
 
-window.randomScalingFactor = function() {
-	return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
-};
+	/*this.getClicks = function (req, res) {
+		Users
+			.findOne({ 'github.id': req.user.github.id }, { '_id': false })
+			.exec(function (err, result) {
+				if (err) { throw err; }
 
-window.randomScalingFactorNew = function(num) {
-	return Math.round((num/*/1000) * 100*/));
-};
+				res.json(result.nbrClicks);
+			});
+	};*/
 
-   var addButton = document.querySelector('#addDataset');
-   var deleteButton = document.querySelector('#removeDataset');
-   var stock = document.querySelector('#stock');
-   var apiUrl = appUrl + '/api/:id/trader';
+	/*this.addClick = function (req, res) {
+		Users
+			.findOneAndUpdate({ 'github.id': req.user.github.id }, { $inc: { 'nbrClicks.clicks': 1 } })
+			.exec(function (err, result) {
+					if (err) { throw err; }
 
-   function updateTrader (data) {
-      //console.log(config);
-      var traderObject = JSON.parse(data);
-      //var traderObject = data;
-      
-      configFromServer = traderObject;
-      
-      //console.log(config);
-            
-      //ope = 'add';
-      
-   }
-   
-   /*function updateTraderAdd (data) {
-      //console.log(config);
-      var traderObject = JSON.parse(data);
-      //var traderObject = data;
-      
-      configFromServer = traderObject;
-      
-      //console.log(config);
-            
-      ope = 'add';
-      
-   }*/
-   
-   /*function updateTraderDel (data) {
-      ope = 'del';
-   }*/
-   
-   ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', apiUrl, updateTrader));
+					res.json(result.nbrClicks);
+				}
+			);
+	};*/
 
-    addButton.addEventListener('click', function () {
-       
-    var stock = document.querySelector('input[id = "stock"]').value;//{'user': user.github.id,'poll':poll}
-    label = stock;
-      ajaxFunctions.ajaxRequest('GET', apiUrl+'add/'+stock, function () {
-         ajaxFunctions.ajaxRequest('GET', apiUrl, updateTrader);
-      });
+	/*this.resetClicks = function (req, res) {
+		Users
+			.findOneAndUpdate({ 'github.id': req.user.github.id }, { 'nbrClicks.clicks': 0 })
+			.exec(function (err, result) {
+					if (err) { throw err; }
 
-   }, false);
-   
-    deleteButton.addEventListener('click', function () {
-       
-       ajaxFunctions.ajaxRequest('GET', apiUrl+'del', function () {
-         ajaxFunctions.ajaxRequest('GET', apiUrl, updateTrader);
-      }); 
+					res.json(result.nbrClicks);
+				}
+			);
+	};*/
 
-   }, false);
-   
-})();
+}
+
+module.exports = PublicHandler;

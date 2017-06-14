@@ -1,7 +1,6 @@
 'use strict';
 
 //GLOBALS
-var configFromServer = {};
 var ope = '';
 var temp = {};
 var dataG = [];
@@ -105,53 +104,73 @@ window.randomScalingFactorNew = function(num) {
    var stock = document.querySelector('#stock');
    var apiUrl = appUrl + '/api/:id/trader';
 
-   function updateTrader (data) {
-      //console.log(config);
+   function updateTraderAdd (data) {
+      console.log(config);
       var traderObject = JSON.parse(data);
-      //var traderObject = data;
       
-      configFromServer = traderObject;
+      dataG = [];
+      labelsG = [];
+      for(var a = 0; a < traderObject.length; a++){
+         
+         dataG.push(parseFloat(traderObject[a].close)-parseFloat(traderObject[a].open));
+         labelsG.push(new Date(parseInt(traderObject[a].date)).toDateString());
+      }
+      console.log(labelsG);
+      if(label === '') label = 'GOOG';
+      if(color === undefined) color = window.chartColors.red;
       
-      //console.log(config);
+      var colorNames = Object.keys(window.chartColors);
+      var colorName = colorNames[config.data.datasets.length % colorNames.length];
+            var newColor = window.chartColors[colorName];
             
-      //ope = 'add';
-      
-   }
-   
-   /*function updateTraderAdd (data) {
-      //console.log(config);
-      var traderObject = JSON.parse(data);
-      //var traderObject = data;
-      
-      configFromServer = traderObject;
-      
-      //console.log(config);
+            if(dataG.length > 0){
+            	
+            	temp = {
+                    label: label,
+                    backgroundColor: newColor,
+                    borderColor: newColor,
+                    data: [],
+                    fill: false,
+                }
+                
+            }
             
       ope = 'add';
       
-   }*/
+   }
    
-   /*function updateTraderDel (data) {
+   function updateTraderDel (data) {
       ope = 'del';
-   }*/
+   }
    
-   ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', apiUrl, updateTrader));
+   //ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', apiUrl, updateTrader));
 
     addButton.addEventListener('click', function () {
        
     var stock = document.querySelector('input[id = "stock"]').value;//{'user': user.github.id,'poll':poll}
     label = stock;
       ajaxFunctions.ajaxRequest('GET', apiUrl+'add/'+stock, function () {
-         ajaxFunctions.ajaxRequest('GET', apiUrl, updateTrader);
+         ajaxFunctions.ajaxRequest('GET', apiUrl, updateTraderAdd);
       });
 
    }, false);
    
     deleteButton.addEventListener('click', function () {
        
-       ajaxFunctions.ajaxRequest('GET', apiUrl+'del', function () {
-         ajaxFunctions.ajaxRequest('GET', apiUrl, updateTrader);
-      }); 
+        var stock = document.querySelector('input[id = "stock"]').value;//{'user': user.github.id,'poll':poll}
+        var myDataSets = config.data.datasets;
+        //console.log(config.data.datasets);
+        //console.log(myDataSets.length);
+        //var newDataSets = [];
+        config.data.datasets.splice(myDataSets.length - 1, 1);
+        /*for(var a = 0; a < myDataSets.length; a++){
+            console.log(myDataSets[a].label);
+            if(myDataSets[a].label === stock) config.data.datasets.splice(a, 1);//newDataSets.push(myDataSets[a]);
+        }*/
+        //console.log(config.data.datasets);
+        //console.log(config.data.datasets);
+        //config.data.datasets =[];
+        //config.data.datasets = newDataSets;
 
    }, false);
    

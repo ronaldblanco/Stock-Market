@@ -1,40 +1,19 @@
 'use strict';
 
-
+//GLOBALS
+var ope = '';
+var temp = {};
+var dataG = [];
+var labelsG = [];
+var label = '';
+var color = undefined;
+////////////////
 var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 var config = {
             type: 'line',
             data: {
                 labels: ["January", "February", "March", "April", "May", "June", "July"],
-                datasets: [/*{
-                    label: "My First dataset",
-                    backgroundColor: window.chartColors.red,
-                    borderColor: window.chartColors.red,
-                    data: [
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor()
-                    ],
-                    fill: false,
-                }, {
-                    label: "My Second dataset",
-                    fill: false,
-                    backgroundColor: window.chartColors.blue,
-                    borderColor: window.chartColors.blue,
-                    data: [
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor(),
-                        randomScalingFactor()
-                    ],
-                }*/]
+                datasets: []
             },
             options: {
                 responsive: true,
@@ -67,7 +46,21 @@ var config = {
                     }]
                 }
             }
-        };
+        }
+        
+var chartColors = {
+	red: 'rgb(255, 99, 132)',
+	orange: 'rgb(255, 159, 64)',
+	yellow: 'rgb(255, 205, 86)',
+	green: 'rgb(75, 192, 192)',
+	blue: 'rgb(54, 162, 235)',
+	purple: 'rgb(153, 102, 255)',
+	grey: 'rgb(201, 203, 207)'
+};
+
+var randomScalingFactorNew = function(num) {
+	return Math.round((num/*/1000) * 100*/));
+};
 
 
 var Users = require('../models/users.js');
@@ -78,14 +71,8 @@ var stockG = '';
 
 function PublicHandler () {
 	
-	this.getNothing = function (req, res) {
-	
-        	res.send({});
-	
-	};
-	
 	this.getTrader = function (req, res) {
-		var stock = '';
+		/*var stock = '';
 		if(stockG == '') stock = 'GOOG';
 		else stock = stockG;
 		var configuration = {
@@ -100,9 +87,9 @@ function PublicHandler () {
     		.config(configuration)
     		.transformer('json') // Converts the data to JSON 
     		.temporal(function(data) {
-    		//console.log(data);
-        	res.send(data);
-		});
+    		//console.log(data);*/
+        	res.send(config);
+		//});
     		
 	};
 	
@@ -110,24 +97,81 @@ function PublicHandler () {
 		var stock = req.originalUrl.toString().split("/api/:id/traderadd/")[1];//.split("_");
 		if(stock == null || stock == '') stock = 'GOOG';
 		stockG = stock;
-		console.log(stock);
+		//console.log(stock);
 		var configuration = {
     		//symbol: 'NASD',
     		symbol: 'NASD:'+stock,
-    		//interval: 86400,
+    		interval: 86400,
     		//interval: 345600,
-    		interval: 2592000,
-    		period: '365d',
+    		//interval: 2592000,
+    		period: '30d',
     		fields: ['d','o','c','l','h','v']
 		};
 		traderjs
     		.config(configuration)
     		.transformer('json') // Converts the data to JSON 
     		.temporal(function(data) {
-    		console.log(data);
-        	res.send(data);
+    		//console.log(data);
+    		
+    		
+    		
+    		
+    		
+    		
+    		//console.log(config);
+      var traderObject = data;
+      label = stock;
+      dataG = [];
+      labelsG = [];
+      for(var a = 0; a < traderObject.length; a++){
+         
+         dataG.push(parseFloat(traderObject[a].close)-parseFloat(traderObject[a].open));
+         labelsG.push(new Date(parseInt(traderObject[a].date)).toDateString());
+      }
+      //console.log(labelsG);
+      if(label === '') label = 'GOOG';
+      if(color === undefined) color = chartColors.red;
+      
+      var colorNames = Object.keys(chartColors);
+      var colorName = colorNames[config.data.datasets.length % colorNames.length];
+            var newColor = chartColors[colorName];
+            
+            if(dataG.length > 0){
+            	
+            	temp = {
+                    label: label,
+                    backgroundColor: newColor,
+                    borderColor: newColor,
+                    data: [],
+                    fill: false,
+                }
+               //console.log(temp); 
+            }
+    		
+    		
+    		
+    		
+    		var newdata = [];
+                for(var b = 0; b < dataG.length; b++){
+        			newdata.push(/*randomScalingFactorNew(*/dataG[b]/*)*/);
+    			}
+    			temp.data = newdata;
+    			//console.log(temp);
+    			config.data.datasets.push(temp);
+    			config.data.labels = labelsG;
+    		
+    		//console.log(config);
+    		
+        	res.send(config);
 		});
     		
+	};
+	
+	this.delTrader = function (req, res) {
+		var count = config.data.datasets.length;
+		config.data.datasets.splice(count - 1, 1);
+        res.send(config);
+	
 	};
 
 	/*this.getClicks = function (req, res) {

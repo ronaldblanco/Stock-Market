@@ -139,23 +139,45 @@
             window.myLine = new Chart(ctx, config);
             //window.myLine.update();
         };
+        
 
-		
+		var colorNames = Object.keys(window.chartColors);
 		document.getElementById('update').addEventListener('click', function() {
+            console.log(config);
+            console.log(randomScalingFactorNew(1));
+            console.log(window.chartColors.red);
             
-            if(ope == 'add'){
-                var newdata = [];
+            if(config.data.datasets != configFromServer.data.datasets){
+                
+            
+            config.data.datasets = [];
+                for(var a = 0; a < configFromServer.data.datasets.length; a++){
+                    
+                    var colorName = colorNames[configFromServer.data.datasets.length % colorNames.length];
+                    var newColor = window.chartColors[colorName];
+                    config.data.datasets.push(configFromServer.data.datasets[a]);
+                    config.data.labels = configFromServer.data.labels;
+                    //config.data.datasets[a].backgroundColor = newColor;
+                    //config.data.datasets[a].borderColor = newColor;
+                    
+                    for(var b = 0; b < configFromServer.data.datasets[a].data.length; b++){
+                        config.data.datasets[a].data[b] = randomScalingFactorNew(configFromServer.data.datasets[a].data[b]);
+                    }
+                    
+                    window.myLine.update();
+                }
+                /*var newdata = [];
                 for(var a = 0; a < dataG.length; a++){
         			newdata.push(randomScalingFactorNew(dataG[a]));
     			}
     			temp.data = newdata;
     			config.data.datasets.push(temp);
-    			config.data.labels = labelsG;
-    			ope = '';
-            }else if(ope == 'del'){
-                
-                ope = '';
+    			config.data.labels = labelsG;*/
+    			//ope = '';
             }
+                
+                //ope = '';
+            //}
   
               window.myLine.update();
         });

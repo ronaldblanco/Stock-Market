@@ -71,4 +71,7 @@ module.exports = function (app, passport) {
 	app.route('/api/:id/traderadd/*')
 		.get(isNotLoggedIn, publicHandler.addTrader)
 		
+	app.route('/api/:id/traderdel')
+		.get(isNotLoggedIn, publicHandler.delTrader)
+		
 };
