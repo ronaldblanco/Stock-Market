@@ -15,6 +15,12 @@
         -ms-user-select: none;
     }
     </style>
+    
+    <script src="/public/js/socket.js"></script>  
+<script>  
+    var socket = io.connect('/');
+</script>  
+    
 	</head>
 
 	<body>
@@ -37,7 +43,7 @@
     <button id="update">Update CHART</button>
     <!--<button id="randomizeData">Randomize Data</button>-->
     <button id="addDataset">Add STOCK</button>
-    <button id="removeDataset">Remove STOCK</button>
+    <button id="removeDataset">Remove STOCK (last in is first out)</button>
     <!--<button id="addData">Add Data</button>
     <button id="removeData">Remove Data</button>-->
     
@@ -166,7 +172,7 @@
         document.getElementById('addDataset').addEventListener('click', function() {
             
             
-            window.myLine.update();
+            //window.myLine.update();
           });
 
         /*document.getElementById('addData').addEventListener('click', function() {
@@ -184,7 +190,7 @@
 
         document.getElementById('removeDataset').addEventListener('click', function() {
             //config.data.datasets.splice(0, 1);
-            window.myLine.update();
+            //window.myLine.update();
         });
 
         /*document.getElementById('removeData').addEventListener('click', function() {

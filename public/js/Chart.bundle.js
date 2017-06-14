@@ -8791,6 +8791,8 @@ module.exports = function(Chart) {
 		getDatasetMeta: function(datasetIndex) {
 			var me = this;
 			var dataset = me.data.datasets[datasetIndex];
+			//console.log('datasetIndex of chart '+dataset);
+			//console.log('dataset of chart '+dataset);
 			if (!dataset._meta) {
 				dataset._meta = {};
 			}

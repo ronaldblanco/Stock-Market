@@ -7,6 +7,7 @@ var passport = require('passport');
 var session = require('express-session');
 
 var app = express();
+
 require('dotenv').load();
 require('./app/config/passport')(passport);
 
@@ -25,10 +26,20 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+//app.use(io);//WEBSOCKE
 
 routes(app, passport);
 
+//WEBSOCKE
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+io.on('connection', function(){ console.log('socked.io->connected') });
+//WEBSOCKE
+
 var port = process.env.PORT || 8080;
-app.listen(port,  function () {
+/*app.listen(port,  function () {
 	console.log('Node.js listening on port ' + port + '...');
+});*/
+server.listen(port,  function () {
+	console.log('Node.js with WebSocket listening on port ' + port + '...');
 });

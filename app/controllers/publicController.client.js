@@ -159,16 +159,18 @@ window.randomScalingFactorNew = function(num) {
        
         var stock = document.querySelector('input[id = "stock"]').value;//{'user': user.github.id,'poll':poll}
         var myDataSets = config.data.datasets;
-        console.log(myDataSets);
-        console.log(myDataSets.length);
-        var newDataSets = [];
-        for(var a = 0; a < myDataSets.length; a++){
-            console.log(myDataSets[a].label);
-            if(myDataSets[a].label !== stock) newDataSets.push(myDataSets[a]);
-        }
-        console.log(newDataSets);
         //console.log(config.data.datasets);
-        config.data.datasets = newDataSets;
+        //console.log(myDataSets.length);
+        //var newDataSets = [];
+        config.data.datasets.splice(myDataSets.length - 1, 1);
+        /*for(var a = 0; a < myDataSets.length; a++){
+            console.log(myDataSets[a].label);
+            if(myDataSets[a].label === stock) config.data.datasets.splice(a, 1);//newDataSets.push(myDataSets[a]);
+        }*/
+        //console.log(config.data.datasets);
+        //console.log(config.data.datasets);
+        //config.data.datasets =[];
+        //config.data.datasets = newDataSets;
 
    }, false);
    
