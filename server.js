@@ -33,7 +33,13 @@ routes(app, passport);
 //WEBSOCKE
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-io.on('connection', function(){ console.log('socked.io->connected') });
+io.on('connection', function(socket){
+	socket.on('event', function(data) {
+        console.log('A client sent us this dumb message:', data.message);
+    });
+	console.log('socked.io->New Client Connected');
+	socket.emit('announcements', { message: 'A new user has joined!' });
+});
 //WEBSOCKE
 
 var port = process.env.PORT || 8080;

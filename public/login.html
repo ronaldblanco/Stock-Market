@@ -20,6 +20,10 @@
     <script src="/public/js/socket.io.js"></script>  
     <script>  
         var socket = io.connect('/');
+        socket.emit('event', { message: 'Hey, I have an important message!' });
+        socket.on('announcements', function(data) {
+            console.log('Got announcement:', data.message);
+        });
     </script>  
     
 	</head>
