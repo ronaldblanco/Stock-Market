@@ -21,8 +21,42 @@
     <script>  
         var socket = io.connect('/');
         socket.emit('event', { message: 'Hey, I have an important message!' });
-        socket.on('announcements', function(data) {
+        /*socket.on('announcements', function(data) {
             console.log('Got announcement:', data.message);
+        });*/
+        //var client = io.connect('/api/:id/trader');
+        socket.on('stats', function(data) {
+            configFromServer = JSON.parse(data);
+            console.log('Got data from server!');
+            
+            
+            
+            
+            if(config.data.datasets != configFromServer.data.datasets){
+                
+            config.data.datasets = [];
+                for(var a = 0; a < configFromServer.data.datasets.length; a++){
+                    
+                    var colorName = colorNames[configFromServer.data.datasets.length % colorNames.length];
+                    var newColor = window.chartColors[colorName];
+                    config.data.datasets.push(configFromServer.data.datasets[a]);
+                    config.data.labels = configFromServer.data.labels;
+                    //config.data.datasets[a].backgroundColor = newColor;
+                    //config.data.datasets[a].borderColor = newColor;
+                    
+                    for(var b = 0; b < configFromServer.data.datasets[a].data.length; b++){
+                        config.data.datasets[a].data[b] = randomScalingFactorNew(configFromServer.data.datasets[a].data[b]);
+                    }
+                    
+                    window.myLine.update();
+                }
+                
+            }
+            
+            
+            
+          window.myLine.update();  
+            
         });
     </script>  
     
@@ -133,7 +167,7 @@
                 }
             }
         };*/
-
+        
         window.onload = function() {
             var ctx = document.getElementById("canvas").getContext("2d");
             window.myLine = new Chart(ctx, config);
@@ -143,9 +177,10 @@
 
 		var colorNames = Object.keys(window.chartColors);
 		document.getElementById('update').addEventListener('click', function() {
-            console.log(config);
-            console.log(randomScalingFactorNew(1));
-            console.log(window.chartColors.red);
+		    
+            //console.log(config);
+            //console.log(randomScalingFactorNew(1));
+            //console.log(window.chartColors.red);
             
             if(config.data.datasets != configFromServer.data.datasets){
                 

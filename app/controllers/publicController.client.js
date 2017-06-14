@@ -64,7 +64,7 @@ var config = {
                         display: true,
                         scaleLabel: {
                             display: true,
-                            labelString: 'Month'
+                            labelString: 'Date'
                         }
                     }],
                     yAxes: [{

@@ -34,7 +34,7 @@ var config = {
                         display: true,
                         scaleLabel: {
                             display: true,
-                            labelString: 'Month'
+                            labelString: 'Date'
                         }
                     }],
                     yAxes: [{
@@ -65,7 +65,10 @@ var randomScalingFactorNew = function(num) {
 
 var Users = require('../models/users.js');
 var traderjs = require('traderjs');
-var io = require('socket.io');
+//WEBSOCKET
+var io = require('socket.io')();
+var iosa = io.of('/api/:id/trader');
+/////////////
 var stockG = '';
 //io.on('connection', function(){ console.log('socked.io->connected') });
 
@@ -88,6 +91,12 @@ function PublicHandler () {
     		.transformer('json') // Converts the data to JSON 
     		.temporal(function(data) {
     		//console.log(data);*/
+    		
+    		/*iosa.on('connection', function(socket){  
+    			console.log('Connected to Trader');
+			});*/
+			iosa.emit('stats', { data: config });  
+    		
         	res.send(config);
 		//});
     		
