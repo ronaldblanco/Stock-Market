@@ -33,16 +33,23 @@ routes(app, passport);
 //WEBSOCKE/////////////
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+var webSocketHandler = require(process.cwd() + '/app/controllers/webSocketHandler.server.js');
 
 var numClients = 0;
-io.on('connection', function(socket){
+var endpoint = io
+  .of('/')
+  .on('connection', function (socket) {
+      webSocketHandler.respond(endpoint,socket);
+  });
+//io.sockets.on('connection', webSocketHandler.respond);
+/*io.on('connection', function(socket){
 	socket.on('event', function(data) {
         console.log('A client sent us this message:', data.message);
         if(data.message == 'I did add a stock to the chart!') io.emit('broadcast', 'A new Stock was Add by a Client, please update the chart!');
         else if(data.message == 'I did remove a stock from the chart!') io.emit('broadcast', 'A Stock was remove by a Client, please update the chart!');
     });
-	/*console.log('socked.io->New Client Connected');
-	socket.emit('announcements', { message: 'A new user has joined!' });*/
+	//console.log('socked.io->New Client Connected');
+	//socket.emit('announcements', { message: 'A new user has joined!' });
 	
 	numClients++;
     io.emit('stats', { numClients: numClients });
@@ -56,7 +63,7 @@ io.on('connection', function(socket){
         console.log('Connected clients:', numClients);
     });
 	
-});
+});*/
 //WEBSOCKE
 
 var port = process.env.PORT || 8080;

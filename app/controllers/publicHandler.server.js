@@ -1,6 +1,7 @@
 'use strict';
 
 //GLOBALS
+var numClients = 0;
 var ope = '';
 var temp = {};
 var dataG = [];
@@ -66,8 +67,8 @@ var randomScalingFactorNew = function(num) {
 var Users = require('../models/users.js');
 var traderjs = require('traderjs');
 //WEBSOCKET
-var io = require('socket.io')();
-var iosa = io.of('/');
+//var io = require('socket.io')();
+//var iosa = io.of('/');
 /////////////
 var stockG = '';
 //io.on('connection', function(){ console.log('socked.io->connected') });
@@ -75,31 +76,20 @@ var stockG = '';
 function PublicHandler () {
 	
 	this.getTrader = function (req, res) {
-		/*var stock = '';
-		if(stockG == '') stock = 'GOOG';
-		else stock = stockG;
-		var configuration = {
-    		//symbol: 'NASD',
-    		symbol: 'NASD:'+stock,
-    		//interval: 86400,
-    		interval: 345600,
-    		period: '365d',
-    		fields: ['d','o','c','l','h','v']
-		};
-		traderjs
-    		.config(configuration)
-    		.transformer('json') // Converts the data to JSON 
-    		.temporal(function(data) {
-    		//console.log(data);*/
-    		
+		
     		/*iosa.on('connection', function(socket){  
     			console.log('Connected to Trader');
 			});*/
-			iosa.emit('data', { data: config });  
+			//iosa.emit('data', { data: config });  
     		
         	res.send(config);
-		//});
-    		
+		
+	};
+	
+	this.returnTrader = function () {
+		
+    		return config;
+		
 	};
 	
 	this.addTrader = function (req, res) {
@@ -182,6 +172,42 @@ function PublicHandler () {
         res.send(config);
 	
 	};
+	
+	/*this.webSocket = function(socket){
+	    
+	    
+	    socket.on('event', function(data) {
+        console.log('A client sent us this message:', data.message);
+        if(data.message == 'I did add a stock to the chart!') io.emit('broadcast', 'A new Stock was Add by a Client, please update the chart!');
+        else if(data.message == 'I did remove a stock from the chart!') io.emit('broadcast', 'A Stock was remove by a Client, please update the chart!');
+    });
+	//console.log('socked.io->New Client Connected');
+	//socket.emit('announcements', { message: 'A new user has joined!' });
+	
+	numClients++;
+    io.emit('stats', { numClients: numClients });
+
+    console.log('Connected clients:', numClients);
+
+    socket.on('disconnect', function() {
+        numClients--;
+        io.emit('stats', { numClients: numClients });
+
+        console.log('Connected clients:', numClients);
+    });
+	    
+	    
+	    // this function expects a socket_io connection as argument
+
+        // now we can do whatever we want:
+        //socket_io.on('news',function(newsreel){
+
+        // as is proper, protocol logic like
+        // this belongs in a controller:
+
+            //socket_io.broadcast.emit(newsreel);
+        //});
+	};*/
 
 	/*this.getClicks = function (req, res) {
 		Users
