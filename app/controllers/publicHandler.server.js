@@ -67,7 +67,7 @@ var Users = require('../models/users.js');
 var traderjs = require('traderjs');
 //WEBSOCKET
 var io = require('socket.io')();
-var iosa = io.of('/api/:id/trader');
+var iosa = io.of('/');
 /////////////
 var stockG = '';
 //io.on('connection', function(){ console.log('socked.io->connected') });
@@ -95,7 +95,7 @@ function PublicHandler () {
     		/*iosa.on('connection', function(socket){  
     			console.log('Connected to Trader');
 			});*/
-			iosa.emit('stats', { data: config });  
+			iosa.emit('data', { data: config });  
     		
         	res.send(config);
 		//});

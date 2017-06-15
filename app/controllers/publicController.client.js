@@ -1,6 +1,7 @@
 'use strict';
 
 //GLOBALS
+var connected = 0;
 var configFromServer = {};
 var ope = '';
 var temp = {};
@@ -99,10 +100,12 @@ window.randomScalingFactor = function() {
 window.randomScalingFactorNew = function(num) {
 	return Math.round((num/*/1000) * 100*/));
 };
-
+    
+    var update = document.querySelector('#update');
    var addButton = document.querySelector('#addDataset');
    var deleteButton = document.querySelector('#removeDataset');
    var stock = document.querySelector('#stock');
+   var count = document.querySelector('#count');
    var apiUrl = appUrl + '/api/:id/trader';
 
    function updateTrader (data) {
@@ -111,7 +114,7 @@ window.randomScalingFactorNew = function(num) {
       //var traderObject = data;
       
       configFromServer = traderObject;
-      
+      count.innerHTML = 'Connected Clients: '+connected;
       //console.log(config);
             
       //ope = 'add';
@@ -136,6 +139,12 @@ window.randomScalingFactorNew = function(num) {
    }*/
    
    ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', apiUrl, updateTrader));
+
+    update.addEventListener('click', function () {
+       
+         ajaxFunctions.ajaxRequest('GET', apiUrl, updateTrader);
+      
+   }, false);
 
     addButton.addEventListener('click', function () {
        

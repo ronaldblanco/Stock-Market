@@ -18,14 +18,28 @@
     
     <!--WEB SOCKET-->
     <script src="/public/js/socket.io.js"></script>  
-    <script>  
+    <script> 
+    
         var socket = io.connect('/');
-        socket.emit('event', { message: 'Hey, I have an important message!' });
+        //socket.emit('event', { message: 'Hey, I have an important message!' });
+        socket.on('stats', function(data) {
+            console.log('Connected Clients:', data);
+            connected = data.numClients;
+        });
+        
+        var socket1 = io.connect('/');
+        socket1.on('broadcast', function(data) {
+            console.log('broadcast:', data);
+            alert(data);
+            //connected = data.numClients;
+        });
+        
         /*socket.on('announcements', function(data) {
             console.log('Got announcement:', data.message);
         });*/
-        //var client = io.connect('/api/:id/trader');
-        socket.on('stats', function(data) {
+        
+        var client = io.connect('/');
+        client.on('data', function(data) {
             configFromServer = JSON.parse(data);
             console.log('Got data from server!');
             
@@ -78,6 +92,7 @@
 			
 	<center>
 	    <br>
+	    <div id = "count"></div>
 	STOCK:<input type="text" name="stock" id="stock" placeholder="Stock" value = ""><br>
     <button id="update">Update CHART</button>
     <!--<button id="randomizeData">Randomize Data</button>-->
@@ -233,7 +248,7 @@
         
         document.getElementById('addDataset').addEventListener('click', function() {
             
-            
+            socket.emit('event', { message: 'I did add a stock to the chart!' });
             //window.myLine.update();
           });
 
@@ -251,6 +266,7 @@
         });*/
 
         document.getElementById('removeDataset').addEventListener('click', function() {
+            socket.emit('event', { message: 'I did remove a stock from the chart!' });
             //config.data.datasets.splice(0, 1);
             //window.myLine.update();
         });
