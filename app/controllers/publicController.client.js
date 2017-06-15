@@ -50,7 +50,7 @@ var config = {
                 responsive: true,
                 title:{
                     display:true,
-                    text:'Chart.js Line Chart'
+                    text:'Stock Market Trens'
                 },
                 tooltips: {
                     mode: 'index',

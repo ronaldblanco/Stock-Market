@@ -10,7 +10,7 @@ var label = '';
 var color = undefined;
 ////////////////
 var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-var config = {
+/*var config = {
             type: 'line',
             data: {
                 labels: ["January", "February", "March", "April", "May", "June", "July"],
@@ -47,7 +47,7 @@ var config = {
                     }]
                 }
             }
-        }
+        }*/
         
 var chartColors = {
 	red: 'rgb(255, 99, 132)',
@@ -65,6 +65,7 @@ var randomScalingFactorNew = function(num) {
 
 
 var Users = require('../models/users.js');
+var config = require('../models/config.js');
 var traderjs = require('traderjs');
 //WEBSOCKET
 //var io = require('socket.io')();

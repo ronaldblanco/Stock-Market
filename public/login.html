@@ -20,12 +20,12 @@
     <script src="/public/js/socket.io.js"></script>  
     <script> 
     
-        var socket = io.connect('/');
+        /*var socket = io.connect('/');
         //socket.emit('event', { message: 'Hey, I have an important message!' });
         socket.on('stats', function(data) {
             console.log('Connected Clients:', data);
             connected = data.numClients;
-        });
+        });*/
         
         var socket1 = io.connect('/');
         socket1.on('broadcast', function(data) {
@@ -39,16 +39,22 @@
         });*/
         
         var client = io.connect('/');
-        client.on('data', function(data) {
-            configFromServer = JSON.parse(data);
+        client.on('stats', function(data) {
+            
+            connected = data.numClients;
+            var count = document.querySelector('#count');
+            count.innerHTML = 'Connected Clients: '+connected;
+            
+            console.log('WEBSOCKETCLIENT->'+data.data);
+            configFromServer = data.data;
             console.log('Got data from server!');
             
             
             
             
-            if(config.data.datasets != configFromServer.data.datasets){
-                
-            config.data.datasets = [];
+            if((config.data.datasets != configFromServer.data.datasets)){
+                if(configFromServer.data.datasets === undefined) configFromServer.data.datasets = [];
+                config.data.datasets = [];
                 for(var a = 0; a < configFromServer.data.datasets.length; a++){
                     
                     var colorName = colorNames[configFromServer.data.datasets.length % colorNames.length];
@@ -72,6 +78,7 @@
           window.myLine.update();  
             
         });
+        
     </script>  
     
 	</head>
