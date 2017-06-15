@@ -20,9 +20,9 @@
     <script src="/public/js/socket.io.js"></script>  
     <script> 
     
-        /*var socket = io.connect('/');
+        var socket = io.connect('/');
         //socket.emit('event', { message: 'Hey, I have an important message!' });
-        socket.on('stats', function(data) {
+        /*socket.on('stats', function(data) {
             console.log('Connected Clients:', data);
             connected = data.numClients;
         });*/
@@ -45,12 +45,12 @@
             var count = document.querySelector('#count');
             count.innerHTML = 'Connected Clients: '+connected;
             
+            
+            function updateChart(){
+                
             console.log('WEBSOCKETCLIENT->'+data.data);
             configFromServer = data.data;
             console.log('Got data from server!');
-            
-            
-            
             
             if((config.data.datasets != configFromServer.data.datasets)){
                 if(configFromServer.data.datasets === undefined) configFromServer.data.datasets = [];
@@ -73,7 +73,9 @@
                 
             }
             
-            
+            }
+           
+           window.setTimeout(updateChart,3000); 
             
           window.myLine.update();  
             

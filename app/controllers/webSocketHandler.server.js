@@ -9,6 +9,8 @@ module.exports.respond = function(endpoint,socket){
     //var publicHandler = require(process.cwd() + '/app/controllers/publicHandler.server.js');
     //console.log(config.data.datasets);
     
+    
+    
     var io = endpoint;
     socket.on('event', function(data) {
         console.log('WEBSOCKETSERVER->'+config.data.datasets.length);

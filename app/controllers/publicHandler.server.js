@@ -114,10 +114,6 @@ function PublicHandler () {
     		//console.log(data);
     		
     		
-    		
-    		
-    		
-    		
     		//console.log(config);
       var traderObject = data;
       label = stock;
@@ -147,8 +143,6 @@ function PublicHandler () {
                 }
                //console.log(temp); 
             }
-    		
-    		
     		
     		
     		var newdata = [];
