@@ -114,7 +114,7 @@ window.randomScalingFactorNew = function(num) {
       //var traderObject = data;
       
       configFromServer = traderObject;
-      count.innerHTML = 'Connected Clients: '+connected;
+      count.innerHTML = 'Connected Clients: <kbd>'+connected+'</kbd>';
       //console.log(config);
             
       //ope = 'add';
