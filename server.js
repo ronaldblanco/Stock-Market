@@ -9,7 +9,7 @@ var session = require('express-session');
 var app = express();
 
 require('dotenv').load();
-require('./app/config/passport')(passport);
+//require('./app/config/passport')(passport);
 
 //mongoose.connect(process.env.MONGO_URI);
 //mongoose.Promise = global.Promise;
@@ -28,7 +28,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 //app.use(io);//WEBSOCKE
 
-routes(app, passport);
+routes(app/*, passport*/);
 
 //WEBSOCKE/////////////
 var server = require('http').createServer(app);

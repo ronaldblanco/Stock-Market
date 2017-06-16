@@ -51,14 +51,14 @@ module.exports = function (app, passport) {
 			res.json(req.user.github);
 		});
 
-	app.route('/auth/github')
+	/*app.route('/auth/github')
 		.get(passport.authenticate('github'));
 
 	app.route('/auth/github/callback')
 		.get(passport.authenticate('github', {
 			successRedirect: '/',
 			failureRedirect: '/login'
-		}));
+		}));*/
 
 	app.route('/api/:id/clicks')
 		.get(isLoggedIn, clickHandler.getClicks)
