@@ -9,7 +9,7 @@ module.exports = {
                 responsive: true,
                 title:{
                     display:true,
-                    text:'Stock Market Trens'
+                    text:'Stock Market'
                 },
                 tooltips: {
                     mode: 'index',

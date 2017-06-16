@@ -56,7 +56,21 @@ var chartColors = {
 	green: 'rgb(75, 192, 192)',
 	blue: 'rgb(54, 162, 235)',
 	purple: 'rgb(153, 102, 255)',
-	grey: 'rgb(201, 203, 207)'
+	grey: 'rgb(201, 203, 207)',
+	red1: 'rgb(255, 150, 132)',
+	orange1: 'rgb(255, 159, 100)',
+	yellow1: 'rgb(255, 205, 100)',
+	green1: 'rgb(125, 192, 192)',
+	blue1: 'rgb(100, 162, 235)',
+	purple1: 'rgb(153, 150, 255)',
+	grey1: 'rgb(201, 250, 207)',
+	red2: 'rgb(255, 200, 180)',
+	orange2: 'rgb(255, 200, 150)',
+	yellow2: 'rgb(255, 250, 150)',
+	green2: 'rgb(175, 250, 192)',
+	blue2: 'rgb(150, 200, 235)',
+	purple2: 'rgb(200, 200, 255)',
+	grey2: 'rgb(225, 250, 225)'
 };
 
 var randomScalingFactorNew = function(num) {

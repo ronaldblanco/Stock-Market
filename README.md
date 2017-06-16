@@ -1,3 +1,24 @@
+# Chart the Stock Market
+
+[![Join the chat at https://gitter.im/johnstonbl01/clementinejs](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/johnstonbl01/clementinejs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+## Autor
+
+Created by Ronald Blanco.
+
+pnald.blanco@gmail.com<br>
+https://github.com/ronaldblanco<br>
+https://www.linkedin.com/in/ronald-blanco-carrazana-5b506268/<br>
+http://codepen.io/ronaldblanco/#<br>
+https://www.freecodecamp.com/ronaldblanco<br>
+
+## User Story
+
+I can view a graph displaying the recent trend lines for each added stock.<br>
+I can add new stocks by their symbol name.<br>
+I can remove stocks.<br>
+I can see changes in real-time when any other user adds or removes a stock. For this you will need to use Web Sockets.<br>
+
 # Clementine.js FCC Boilerplate
 
 [![Join the chat at https://gitter.im/johnstonbl01/clementinejs](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/johnstonbl01/clementinejs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
