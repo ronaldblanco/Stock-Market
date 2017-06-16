@@ -19,7 +19,7 @@
     <!--WEB SOCKET-->
     <script src="/public/js/socket.io.js"></script>  
     <script> 
-    
+        //var myCount = 0;
         var socket = io.connect('/');
         //socket.emit('event', { message: 'Hey, I have an important message!' });
         /*socket.on('stats', function(data) {
@@ -75,9 +75,16 @@
             
             }
            
-           window.setTimeout(updateChart,3000); 
+           //window.setTimeout(function(){},5000);
+           window.setTimeout(updateChart,1000);
+            //if(myCount == 1){
+                //socket.emit('event', { message: 'Send me again please!' });
+                //myCount = 0;
+            //} 
+           window.setTimeout(updateChart,1000);
+           //window.setTimeout(function(){},60000);
             
-          window.myLine.update();  
+          //window.myLine.update();  
             
         });
         
@@ -256,8 +263,9 @@
 
         
         document.getElementById('addDataset').addEventListener('click', function() {
-            
-            socket.emit('event', { message: 'I did add a stock to the chart!' });
+            window.setTimeout(function(){socket.emit('event', { message: 'I did add a stock to the chart!' });},3000);
+            //socket.emit('event', { message: 'I did add a stock to the chart!' });
+            //myCount++;
             //window.myLine.update();
           });
 
@@ -275,7 +283,9 @@
         });*/
 
         document.getElementById('removeDataset').addEventListener('click', function() {
-            socket.emit('event', { message: 'I did remove a stock from the chart!' });
+            window.setTimeout(function(){socket.emit('event', { message: 'I did remove a stock from the chart!' });},3000);
+            //socket.emit('event', { message: 'I did remove a stock from the chart!' });
+            //myCount++;
             //config.data.datasets.splice(0, 1);
             //window.myLine.update();
         });
